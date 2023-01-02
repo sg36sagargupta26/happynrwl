@@ -30,9 +30,6 @@ export const App = () => {
             rowTextForSelection={(item, index) => {
               return item;
             }}
-            onChangeSearchInputText={(text)=>{
-              return text;
-            }}
           />
     </View>
   );

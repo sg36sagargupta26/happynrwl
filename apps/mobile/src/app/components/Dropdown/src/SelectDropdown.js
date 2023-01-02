@@ -44,8 +44,6 @@ const SelectDropdown = (
     defaultButtonText /* String */,
     buttonTextAfterSelection /* function */,
     rowTextForSelection /* function */,
-    defaultValue /* any */,
-    defaultValueByIndex /* integer */,
     disabled /* boolean */,
     disableAutoScroll /* boolean */,
     disabledIndexs /* array of disabled Row index */,
@@ -67,14 +65,11 @@ const SelectDropdown = (
     rowTextStyle /* style object for row text */,
     selectedRowStyle /* style object for selected row */,
     selectedRowTextStyle /* style object for selected row text */,
-    renderCustomizedRowChild /* function returns React component for customized row */,
-    /////////////////////////////
-    search ,
-    onChangeSearchInputText /* function callback when the search input text changes, this will automatically disable the dropdown's interna search to be implemented manually outside the component  */,
+    
+    
   },
   ref,
 ) => {
-  const disabledInternalSearch = !!onChangeSearchInputText;
   /* ******************* hooks ******************* */
   const dropdownButtonRef = useRef(); // button ref to get positions
   const dropDownFlatlistRef = useRef(null); // ref to the drop down flatlist
@@ -85,14 +80,14 @@ const SelectDropdown = (
     selectItem,
     reset,
     setSearchTxt,
-  } = useSelectDropdown(data, defaultValueByIndex, defaultValue, disabledInternalSearch);
+  } = useSelectDropdown(data);
   const {
     isVisible, //
     setIsVisible,
     onDropdownButtonLayout,
     getItemLayout,
     dropdownWindowStyle,
-  } = useLayoutDropdown(data, dropdownStyle, rowStyle, search);
+  } = useLayoutDropdown(data, dropdownStyle, rowStyle);
   useImperativeHandle(ref, () => ({
     reset: () => {
       reset();
@@ -147,16 +142,14 @@ const SelectDropdown = (
           activeOpacity={0.8}
           style={{...styles.dropdownRow, ...rowStyle, ...(isSelected && selectedRowStyle)}}
           onPress={() => onSelectItem(item, index)}>
-          {renderCustomizedRowChild ? (
-            <View style={styles.dropdownCustomizedRowParent}>{renderCustomizedRowChild(item, index, isSelected)}</View>
-          ) : (
+          
             <Text
               numberOfLines={1}
               allowFontScaling={false}
               style={{...styles.dropdownRowText, ...rowTextStyle, ...(isSelected && selectedRowTextStyle)}}>
               {rowTextForSelection ? rowTextForSelection(item, index) : item.toString()}
             </Text>
-          )}
+         
         </TouchableOpacity>
       )
     );
@@ -174,7 +167,7 @@ const SelectDropdown = (
               renderItem={renderFlatlistItem}
               getItemLayout={getItemLayout}
               onLayout={onLayout}
-              stickyHeaderIndices={search && [0]}
+              stickyHeaderIndices={ [0]}
               keyboardShouldPersistTaps="always"
               onEndReached={() => onScrollEndReached && onScrollEndReached()}
               onEndReachedThreshold={0.5}

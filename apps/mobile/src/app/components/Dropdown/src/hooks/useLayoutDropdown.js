@@ -2,7 +2,7 @@ import { useState, useMemo} from 'react';
 import {I18nManager, Dimensions} from 'react-native';
 const {height} = Dimensions.get('window');
 
-export const useLayoutDropdown = (data, dropdownStyle, rowStyle) => {
+export const useLayoutDropdown = ( dropdownStyle, rowStyle) => {
   const [isVisible, setIsVisible] = useState(false); // dropdown visible ?
   const [buttonLayout, setButtonLayout] = useState(null);
   const [dropdownPX, setDropdownPX] = useState(0); // position x
