@@ -1,13 +1,31 @@
-import React, {forwardRef, useImperativeHandle} from 'react';
-import {View, Text, TouchableOpacity, FlatList} from 'react-native';
+import React, {forwardRef, useImperativeHandle, useRef} from 'react';
+import {View, Text, TouchableOpacity, FlatList , Modal} from 'react-native';
 import styles from './styles';
 import {isExist} from './helpers/isExist';
-import DropdownOverlay from './components/DropdownOverlay';
-import DropdownModal from './components/DropdownModal';
-import DropdownWindow from './components/DropdownWindow';
 import {useSelectDropdown} from './hooks/useSelectDropdown';
 import {useLayoutDropdown} from './hooks/useLayoutDropdown';
-import {useRefs} from './hooks/useRefs';
+
+const DropdownModal = ({visible, statusBarTranslucent, children}) => {
+  return (
+    <Modal
+      supportedOrientations={['portrait', 'landscape']}
+      animationType="none"
+      transparent={true}
+      statusBarTranslucent={statusBarTranslucent}
+      visible={visible}>
+      {children}
+    </Modal>
+  );
+};
+
+const DropdownOverlay = ({onPress}) => {
+  return (
+    <TouchableOpacity
+      activeOpacity={1}
+      onPress={onPress}
+    />
+  );
+};
 
 const SelectDropdown = (
   {
@@ -48,7 +66,8 @@ const SelectDropdown = (
 ) => {
   const disabledInternalSearch = !!onChangeSearchInputText;
   /* ******************* hooks ******************* */
-  const {dropdownButtonRef, dropDownFlatlistRef} = useRefs();
+  const dropdownButtonRef = useRef(); // button ref to get positions
+  const dropDownFlatlistRef = useRef(null); // ref to the drop down flatlist
   const {
     dataArr, //
     selectedItem,
@@ -80,7 +99,7 @@ const SelectDropdown = (
   }));
   /* ******************* Methods ******************* */
   const openDropdown = () => {
-    dropdownButtonRef.current.measure((fx, fy, w, h, px, py) => {
+    dropdownButtonRef.current.measure(( w, h, px, py) => {
       onDropdownButtonLayout(w, h, px, py);
       setIsVisible(true);
       onFocus && onFocus();
@@ -158,7 +177,6 @@ const SelectDropdown = (
   ///////////////////////////////////////////////////////
   return (
     <TouchableOpacity
-      activeOpacity={0.8}
       ref={dropdownButtonRef}
       disabled={disabled}
       onPress={openDropdown}
