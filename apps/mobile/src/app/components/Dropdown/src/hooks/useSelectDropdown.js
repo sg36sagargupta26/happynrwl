@@ -1,5 +1,4 @@
 import {useState, useEffect, useMemo} from 'react';
-import {deepSearchInArr} from '../helpers/deepSearchInArr';
 
 const isExist = value => {
   if (value !== undefined && value != null) {
@@ -37,8 +36,8 @@ export const useSelectDropdown = (data, defaultValueByIndex, defaultValue, disab
     if (disabledInternalSearch) {
       return data;
     }
-    return searchTxt ? deepSearchInArr(searchTxt, data) : data;
-  }, [data, searchTxt,disabledInternalSearch]);
+    return data;
+  }, [data,disabledInternalSearch]);
 
   const selectItem = index => {
     setSelectedItem(data[index]);
