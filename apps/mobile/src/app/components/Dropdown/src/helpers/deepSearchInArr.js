@@ -27,7 +27,7 @@ export const deepSearchInArr = (query, arr) => {
     } else {
       array.push(null);
     }
-    if (i == arr.length - 1) {
+    if (i === arr.length - 1) {
       return array;
     }
   }
