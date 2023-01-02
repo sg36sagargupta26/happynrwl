@@ -43,6 +43,9 @@ const SelectDropdown = (
     onSelect /* function  */,
     defaultButtonText /* String */,
     buttonTextAfterSelection /* function */,
+    rowTextForSelection /* function */,
+    defaultValue /* any */,
+    defaultValueByIndex /* integer */,
     disabled /* boolean */,
     disableAutoScroll /* boolean */,
     disabledIndexs /* array of disabled Row index */,
@@ -59,11 +62,14 @@ const SelectDropdown = (
     rowStyle /* style object for row */,
     selectedRowStyle /* style object for selected row */,
     selectedRowTextStyle /* style object for selected row text */,
-    
-    
+    renderCustomizedRowChild /* function returns React component for customized row */,
+    /////////////////////////////
+    search ,
+    onChangeSearchInputText /* function callback when the search input text changes, this will automatically disable the dropdown's interna search to be implemented manually outside the component  */,
   },
   ref,
 ) => {
+  const disabledInternalSearch = !!onChangeSearchInputText;
   /* ******************* hooks ******************* */
   const dropdownButtonRef = useRef(); // button ref to get positions
   const dropDownFlatlistRef = useRef(null); // ref to the drop down flatlist
@@ -74,14 +80,14 @@ const SelectDropdown = (
     selectItem,
     reset,
     setSearchTxt,
-  } = useSelectDropdown(data);
+  } = useSelectDropdown(data, defaultValueByIndex, defaultValue, disabledInternalSearch);
   const {
     isVisible, //
     setIsVisible,
     onDropdownButtonLayout,
     getItemLayout,
     dropdownWindowStyle,
-  } = useLayoutDropdown(data, dropdownStyle, rowStyle);
+  } = useLayoutDropdown(data, dropdownStyle, rowStyle, search);
   useImperativeHandle(ref, () => ({
     reset: () => {
       reset();
@@ -134,10 +140,14 @@ const SelectDropdown = (
         <TouchableOpacity
           style={{...styles.dropdownRow, ...rowStyle, ...(isSelected && selectedRowStyle)}}
           onPress={() => onSelectItem(item, index)}>
+          {renderCustomizedRowChild ? (
+            <View style={styles.dropdownCustomizedRowParent}>{renderCustomizedRowChild(item, index, isSelected)}</View>
+          ) : (
             <Text
               style={{ ...(isSelected && selectedRowTextStyle)}}>
               {item.toString()}
             </Text>
+          )}
         </TouchableOpacity>
       )
     );
@@ -155,7 +165,7 @@ const SelectDropdown = (
               renderItem={renderFlatlistItem}
               getItemLayout={getItemLayout}
               onLayout={onLayout}
-              stickyHeaderIndices={ [0]}
+              stickyHeaderIndices={search && [0]}
               keyboardShouldPersistTaps="always"
               onEndReachedThreshold={0.5}
             />

@@ -27,7 +27,12 @@ export const App = () => {
             buttonTextAfterSelection={(selectedItem, index) => {
               return selectedItem;
             }}
-            
+            rowTextForSelection={(item, index) => {
+              return item;
+            }}
+            onChangeSearchInputText={(text)=>{
+              return text;
+            }}
           />
     </View>
   );
