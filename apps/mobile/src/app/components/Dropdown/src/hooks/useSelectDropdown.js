@@ -7,7 +7,7 @@ const isExist = value => {
   return false;
 };
 
-export const useSelectDropdown = (data, defaultValueByIndex, defaultValue, disabledInternalSearch) => {
+export const useSelectDropdown = (data, defaultValueByIndex, disabledInternalSearch) => {
   const [selectedItem, setSelectedItem] = useState(null); // selected item from dropdown
   const [selectedIndex, setSelectedIndex] = useState(-1); // index of selected item from dropdown
   const [searchTxt, setSearchTxt] = useState('');

@@ -43,26 +43,20 @@ const SelectDropdown = (
     onSelect /* function  */,
     defaultButtonText /* String */,
     buttonTextAfterSelection /* function */,
-    rowTextForSelection /* function */,
     disabled /* boolean */,
     disableAutoScroll /* boolean */,
     disabledIndexs /* array of disabled Row index */,
     onFocus /* function  */,
     onBlur /* function  */,
-    onScrollEndReached /* function  */,
     /////////////////////////////
     buttonStyle /* style object for button */,
     buttonTextStyle /* style object for button text */,
     renderCustomizedButtonChild /* function returns React component for customized button */,
     /////////////////////////////
-    renderDropdownIcon,
-    dropdownIconPosition,
-    statusBarTranslucent,
     dropdownStyle,
     dropdownOverlayColor /* string */,
     /////////////////////////////
     rowStyle /* style object for row */,
-    rowTextStyle /* style object for row text */,
     selectedRowStyle /* style object for selected row */,
     selectedRowTextStyle /* style object for selected row text */,
     
@@ -138,18 +132,12 @@ const SelectDropdown = (
     return (
       isExist(item) && (
         <TouchableOpacity
-          disabled={disabledIndexs?.includes(index)}
-          activeOpacity={0.8}
           style={{...styles.dropdownRow, ...rowStyle, ...(isSelected && selectedRowStyle)}}
           onPress={() => onSelectItem(item, index)}>
-          
             <Text
-              numberOfLines={1}
-              allowFontScaling={false}
-              style={{...styles.dropdownRowText, ...rowTextStyle, ...(isSelected && selectedRowTextStyle)}}>
-              {rowTextForSelection ? rowTextForSelection(item, index) : item.toString()}
+              style={{ ...(isSelected && selectedRowTextStyle)}}>
+              {item.toString()}
             </Text>
-         
         </TouchableOpacity>
       )
     );
@@ -157,7 +145,7 @@ const SelectDropdown = (
   const renderDropdown = () => {
     return (
       isVisible && (
-        <DropdownModal statusBarTranslucent={statusBarTranslucent} visible={isVisible}>
+        <DropdownModal  visible={isVisible}>
           <DropdownOverlay onPress={closeDropdown} backgroundColor={dropdownOverlayColor} />
           <DropdownWindow layoutStyle={dropdownWindowStyle}>
             <FlatList
@@ -169,7 +157,6 @@ const SelectDropdown = (
               onLayout={onLayout}
               stickyHeaderIndices={ [0]}
               keyboardShouldPersistTaps="always"
-              onEndReached={() => onScrollEndReached && onScrollEndReached()}
               onEndReachedThreshold={0.5}
             />
           </DropdownWindow>
@@ -185,11 +172,10 @@ const SelectDropdown = (
       onPress={openDropdown}
       style={{
         ...styles.dropdownButton,
-        ...(dropdownIconPosition === 'left' ? styles.row : styles.rowRevese),
+        ... styles.row,
         ...buttonStyle,
       }}>
       {renderDropdown()}
-      {renderDropdownIcon && renderDropdownIcon(isVisible)}
       {renderCustomizedButtonChild ? (
         <View style={styles.dropdownCustomizedButtonParent}>
           {renderCustomizedButtonChild(selectedItem, selectedIndex)}
