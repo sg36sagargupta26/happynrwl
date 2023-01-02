@@ -7,11 +7,7 @@ import SelectDropdown from './components/Dropdown/src/SelectDropdown';
 
 export const App = () => {
   const countries = [
-    'Egypt',
-    'Canada',
-    'Australia',
-    'Ireland',
-    'Brazil',
+    'us',
     'England',
     'Dubai',
     'France',
@@ -38,7 +34,6 @@ export const App = () => {
               return text;
             }}
           />
-
     </View>
   );
 };

@@ -2,7 +2,6 @@ import React, {forwardRef, useImperativeHandle} from 'react';
 import {View, Text, TouchableOpacity, FlatList} from 'react-native';
 import styles from './styles';
 import {isExist} from './helpers/isExist';
-import Input from './components/Input';
 import DropdownOverlay from './components/DropdownOverlay';
 import DropdownModal from './components/DropdownModal';
 import DropdownWindow from './components/DropdownWindow';
@@ -42,14 +41,7 @@ const SelectDropdown = (
     selectedRowTextStyle /* style object for selected row text */,
     renderCustomizedRowChild /* function returns React component for customized row */,
     /////////////////////////////
-    search /* boolean */,
-    searchInputStyle /* style object for search input */,
-    searchInputTxtColor /* text color for search input */,
-    searchInputTxtStyle /* text style for search input */,
-    searchPlaceHolder /* placeholder text for search input */,
-    searchPlaceHolderColor /* text color for search input placeholder */,
-    renderSearchInputLeftIcon /* function returns React component for search input icon */,
-    renderSearchInputRightIcon /* function returns React component for search input icon */,
+    search ,
     onChangeSearchInputText /* function callback when the search input text changes, this will automatically disable the dropdown's interna search to be implemented manually outside the component  */,
   },
   ref,
@@ -63,13 +55,11 @@ const SelectDropdown = (
     selectedIndex,
     selectItem,
     reset,
-    searchTxt,
     setSearchTxt,
   } = useSelectDropdown(data, defaultValueByIndex, defaultValue, disabledInternalSearch);
   const {
     isVisible, //
     setIsVisible,
-    buttonLayout,
     onDropdownButtonLayout,
     getItemLayout,
     dropdownWindowStyle,
@@ -118,27 +108,7 @@ const SelectDropdown = (
     selectItem(index);
   };
   /* ******************** Render Methods ******************** */
-  const renderSearchView = () => {
-    return (
-      search && (
-        <Input
-          searchViewWidth={buttonLayout.w}
-          value={searchTxt}
-          valueColor={searchInputTxtColor}
-          placeholder={searchPlaceHolder}
-          placeholderTextColor={searchPlaceHolderColor}
-          onChangeText={txt => {
-            setSearchTxt(txt);
-            disabledInternalSearch && onChangeSearchInputText(txt);
-          }}
-          inputStyle={searchInputStyle}
-          inputTextStyle={searchInputTxtStyle}
-          renderLeft={renderSearchInputLeftIcon}
-          renderRight={renderSearchInputRightIcon}
-        />
-      )
-    );
-  };
+  
   const renderFlatlistItem = ({item, index}) => {
     const isSelected = index === selectedIndex;
     return (
@@ -175,7 +145,6 @@ const SelectDropdown = (
               renderItem={renderFlatlistItem}
               getItemLayout={getItemLayout}
               onLayout={onLayout}
-              ListHeaderComponent={renderSearchView()}
               stickyHeaderIndices={search && [0]}
               keyboardShouldPersistTaps="always"
               onEndReached={() => onScrollEndReached && onScrollEndReached()}

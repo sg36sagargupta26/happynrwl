@@ -10,7 +10,7 @@ export const useSelectDropdown = (data, defaultValueByIndex, defaultValue, disab
 
   // data array changes
   useEffect(() => {
-    if (!data || data.length == 0) {
+    if (!data || data.length === 0) {
       reset();
     }
   }, [data]);
@@ -39,7 +39,7 @@ export const useSelectDropdown = (data, defaultValueByIndex, defaultValue, disab
       return data;
     }
     return searchTxt ? deepSearchInArr(searchTxt, data) : data;
-  }, [data, searchTxt]);
+  }, [data, searchTxt,disabledInternalSearch]);
 
   const selectItem = index => {
     setSelectedItem(data[index]);
