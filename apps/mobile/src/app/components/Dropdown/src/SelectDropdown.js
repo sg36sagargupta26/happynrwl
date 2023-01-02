@@ -5,6 +5,10 @@ import {isExist} from './helpers/isExist';
 import {useSelectDropdown} from './hooks/useSelectDropdown';
 import {useLayoutDropdown} from './hooks/useLayoutDropdown';
 
+const DropdownWindow = ({ children}) => {
+  return <View >{children}</View>;
+};
+
 const DropdownModal = ({visible, statusBarTranslucent, children}) => {
   return (
     <Modal
