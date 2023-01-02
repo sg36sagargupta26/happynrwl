@@ -1,6 +1,5 @@
 import {useState, useEffect, useMemo} from 'react';
 import {deepSearchInArr} from '../helpers/deepSearchInArr';
-import {findIndexInArr} from '../helpers/findIndexInArr';
 
 const isExist = value => {
   if (value !== undefined && value != null) {
@@ -32,14 +31,7 @@ export const useSelectDropdown = (data, defaultValueByIndex, defaultValue, disab
     }
   }, [defaultValueByIndex]);
   // default value added or changed
-  useEffect(() => {
-    // defaultValue may be equals zero
-    if (isExist(defaultValue)) {
-      if (data && findIndexInArr(defaultValue, data) >= 0) {
-        selectItem(findIndexInArr(defaultValue, data));
-      }
-    }
-  }, [defaultValue]);
+
 
   const dataArr = useMemo(() => {
     if (disabledInternalSearch) {
