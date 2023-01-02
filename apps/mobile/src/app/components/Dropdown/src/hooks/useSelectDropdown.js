@@ -1,13 +1,20 @@
 import {useState, useEffect, useMemo} from 'react';
 import {deepSearchInArr} from '../helpers/deepSearchInArr';
 import {findIndexInArr} from '../helpers/findIndexInArr';
-import {isExist} from '../helpers/isExist';
+
+const isExist = value => {
+  if (value !== undefined && value != null) {
+    return true;
+  }
+  return false;
+};
 
 export const useSelectDropdown = (data, defaultValueByIndex, defaultValue, disabledInternalSearch) => {
   const [selectedItem, setSelectedItem] = useState(null); // selected item from dropdown
   const [selectedIndex, setSelectedIndex] = useState(-1); // index of selected item from dropdown
   const [searchTxt, setSearchTxt] = useState('');
 
+  
   // data array changes
   useEffect(() => {
     if (!data || data.length === 0) {

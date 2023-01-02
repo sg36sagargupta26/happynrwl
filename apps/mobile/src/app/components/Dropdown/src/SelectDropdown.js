@@ -1,9 +1,15 @@
 import React, {forwardRef, useImperativeHandle, useRef} from 'react';
 import {View, Text, TouchableOpacity, FlatList , Modal} from 'react-native';
 import styles from './styles';
-import {isExist} from './helpers/isExist';
 import {useSelectDropdown} from './hooks/useSelectDropdown';
 import {useLayoutDropdown} from './hooks/useLayoutDropdown';
+
+const isExist = value => {
+  if (value !== undefined && value != null) {
+    return true;
+  }
+  return false;
+};
 
 const DropdownWindow = ({ children}) => {
   return <View >{children}</View>;
