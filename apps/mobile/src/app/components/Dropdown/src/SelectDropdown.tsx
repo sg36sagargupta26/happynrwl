@@ -4,6 +4,13 @@ import styles from './styles';
 import {useSelectDropdown} from './hooks/useSelectDropdown';
 import {useLayoutDropdown} from './hooks/useLayoutDropdown';
 
+export interface SelectDropdownProps{
+  data ?: Array<unknown>;
+    onSelect ?: (selectedItem: unknown, index: number) => void;
+    defaultButtonText ?: string;
+    buttonTextAfterSelection: (selectedItem: unknown, index: number) => unknown;    
+}
+
 const isExist = value => {
   if (value !== undefined && value != null) {
     return true;
@@ -62,7 +69,6 @@ const SelectDropdown = (
     setIsVisible,
     onDropdownButtonLayout,
     getItemLayout,
-    dropdownWindowStyle,
   } = useLayoutDropdown(data);
   useImperativeHandle(ref, () => ({
     reset: () => {
@@ -106,15 +112,13 @@ const SelectDropdown = (
   /* ******************** Render Methods ******************** */
   
   const renderFlatlistItem = ({item, index}) => {
-    const isSelected = index === selectedIndex;
     return (
       isExist(item) && (
         <TouchableOpacity
-          style={{...styles.dropdownRow, ...(isSelected)}}
+          style={{...styles.dropdownRow}}
           onPress={() => onSelectItem(item, index)}>
           
-            <Text
-              style={{ ...(isSelected )}}>
+            <Text>
               {item.toString()}
             </Text>
         
@@ -127,7 +131,7 @@ const SelectDropdown = (
       isVisible && (
         <DropdownModal  visible={isVisible}>
           <DropdownOverlay onPress={closeDropdown}  />
-          <DropdownWindow layoutStyle={dropdownWindowStyle}>
+          <DropdownWindow >
             <FlatList
               data={dataArr}
               keyExtractor={(item, index) => index.toString()}
